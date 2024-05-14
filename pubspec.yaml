@@ -40,6 +40,7 @@ dependencies:
   mobx: ^2.3.3+2
   flutter_mobx: ^2.2.1+1
   equatable: ^2.0.5
+  awesome_notifications: ^0.8.2
 
 dev_dependencies:
   flutter_test:

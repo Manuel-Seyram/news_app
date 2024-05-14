@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/Notifications/notifications.dart';
 import 'package:news_app/models/articles_model.dart';
 import 'screens.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Notifications().configuration();
   runApp(const MyApp());
+  await Notifications().createInstantNotification();
 }
 
 final GoRouter _router = GoRouter(
@@ -39,9 +43,15 @@ final GoRouter _router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Notifications notifications = Notifications();
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -54,5 +64,12 @@ class MyApp extends StatelessWidget {
             routerConfig: _router,
           );
         });
+  }
+
+  @override
+  void initState() {
+    notifications.checkingPermissionsNotification(context);
+    notifications.startListeningNotificationEvents();
+    super.initState();
   }
 }
